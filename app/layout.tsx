@@ -9,9 +9,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
-        <Header />
         <ToastContainer />
-        <Provider store={store}>{children}</Provider>
+        <Provider store={store}>
+          <Header />
+          {children}
+        </Provider>
       </body>
     </html>
   );
