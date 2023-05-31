@@ -4,16 +4,33 @@ import { useDispatch, useSelector } from 'react-redux';
 import { authApi } from '../modules/auth/api/repository';
 import { authSlice } from '../modules/auth/service/slice';
 import type { TypedUseSelectorHook } from 'react-redux';
+import storage from 'redux-persist/lib/storage';
 
-const rootReducer = combineReducers({
-  [authApi.reducerPath]: authApi.reducer,
-  [authSlice.name]: authApi.reducer,
-});
+const persistConfig = {
+  key: 'conduit',
+  storage,
+  whitelist: [authSlice.name],
+};
+
+const persistentReducer = persistReducer(
+  persistConfig,
+  combineReducers({
+    [authApi.reducerPath]: authApi.reducer,
+    [authSlice.name]: authSlice.reducer,
+  }),
+);
 
 export const store = configureStore({
-  reducer: rootReducer,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(authApi.middleware),
+  reducer: persistentReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }).concat(authApi.middleware),
 });
+
+export const persistedStore = persistStore(store);
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

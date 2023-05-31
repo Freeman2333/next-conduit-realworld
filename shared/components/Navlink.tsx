@@ -13,12 +13,6 @@ export const NavLink: FC<PropsWithChildren<NavLinkProps>> = ({ href, exact, chil
   const pathname = usePathname();
 
   const isActive = exact ? pathname === href : pathname.startsWith(href);
-  console.log({
-    pathname,
-    href,
-    exact,
-    isActive,
-  });
 
   const navLinkClasses = clsx({
     'text-black/80': isActive,
