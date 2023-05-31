@@ -1,8 +1,10 @@
-import Link from 'next/link';
 import { Titillium_Web } from '@next/font/google';
 
 import { NavLink } from '@components/Navlink';
 import { useAuth } from '@modules/auth/hooks/useAuth';
+import { GiNotebook } from 'react-icons/gi';
+import { BsFillGearFill } from 'react-icons/bs';
+import { BiUserCircle } from 'react-icons/bi';
 
 const titillium = Titillium_Web({
   subsets: ['latin'],
@@ -10,7 +12,7 @@ const titillium = Titillium_Web({
 });
 
 const Header = () => {
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, user, logOut } = useAuth();
   console.log(isLoggedIn);
 
   return (
@@ -18,7 +20,7 @@ const Header = () => {
       <NavLink href="/" className={`${titillium.className} text-conduit-green text-2xl`} exact>
         conduit
       </NavLink>
-      <ul className="flex gap-3">
+      <ul className="flex gap-4">
         <li>
           <NavLink href="/" exact>
             Home
@@ -31,6 +33,33 @@ const Header = () => {
             </li>
             <li>
               <NavLink href="/signup">Sign up</NavLink>
+            </li>
+          </>
+        )}
+        {isLoggedIn && (
+          <>
+            <li>
+              <NavLink href="/editor">
+                <GiNotebook />
+                New Article
+              </NavLink>
+            </li>
+            <li>
+              <NavLink href="/settings">
+                <BsFillGearFill />
+                Settings
+              </NavLink>
+            </li>
+            <li>
+              <NavLink href={`/@${user?.username}`}>
+                <BiUserCircle />
+                {user?.username}
+              </NavLink>
+            </li>
+            <li onClick={() => logOut()}>
+              <NavLink href="/" notActive>
+                Log out
+              </NavLink>
             </li>
           </>
         )}

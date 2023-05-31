@@ -33,5 +33,7 @@ export const useAuth = () => {
     dispatch(setUser(data.user));
   };
 
-  return { isLoggedIn, signUp, signIn };
+  const logOut = () => dispatch(setUser(null));
+
+  return { isLoggedIn, signUp, signIn, user, logOut };
 };
