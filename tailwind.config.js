@@ -34,6 +34,12 @@ module.exports = {
           red: '#B85C5C',
         },
       },
+      fontSize: {
+        date: '0.8rem',
+        articleBody: '1.2rem',
+        articleTitle: '2.8rem',
+        logo: '3.5rem',
+      },
     },
   },
   plugins: [],

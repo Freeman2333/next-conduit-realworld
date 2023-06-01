@@ -6,29 +6,29 @@ import clsx from 'clsx';
 interface NavLinkProps extends ComponentProps<typeof Link> {
   href: string;
   children: ReactNode;
-  exact?: boolean;
   notActive?: boolean;
+  activeGreenBorder?: boolean;
   className?: ComponentProps<'link'>['className'];
 }
 
 export const NavLink: FC<PropsWithChildren<NavLinkProps>> = ({
   href,
-  exact,
   children,
   className,
   notActive,
+  activeGreenBorder,
   ...props
 }) => {
   const pathname = usePathname();
 
   const isActive = !notActive && pathname.startsWith(href);
-  console.log({ isActive, children });
   const navLinkClasses = clsx(
-    ' hover:no-underline flex gap-1 items-center',
+    ' hover:no-underline flex gap-1 items-center py-2',
     {
       'text-black/80': isActive,
       'text-black/30': !isActive,
       'hover:text-black/60': !isActive,
+      'border-conduit-green border-b-2': isActive && activeGreenBorder,
     },
     className,
   );

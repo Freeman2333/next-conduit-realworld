@@ -17,14 +17,12 @@ const Header = () => {
 
   return (
     <div className="mx-auto container flex justify-between py-3 items-center">
-      <NavLink href="/" className={`${titillium.className} text-conduit-green text-2xl`} exact>
+      <NavLink href="/" className={`${titillium.className} text-conduit-green text-2xl`}>
         conduit
       </NavLink>
       <ul className="flex gap-4">
         <li>
-          <NavLink href="/" exact>
-            Home
-          </NavLink>
+          <NavLink href="/">Home</NavLink>
         </li>
         {!isLoggedIn && (
           <>
