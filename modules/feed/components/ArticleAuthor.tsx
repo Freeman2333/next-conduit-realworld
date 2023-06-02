@@ -10,7 +10,6 @@ interface ArticleAuthorProps {
 }
 
 const ArticleAuthor: FC<ArticleAuthorProps> = ({ author, createdAt }) => {
-  console.log(author);
   return (
     <div className="flex gap-3 items-center">
       <Link href={`/@${author.username}`}>

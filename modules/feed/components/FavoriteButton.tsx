@@ -1,5 +1,5 @@
 const FavoriteButton = () => {
-  return <div>FavoriteButton</div>;
+  return <Button>FavoriteButton</Button>;
 };
 
 export default FavoriteButton;

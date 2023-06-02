@@ -13,7 +13,6 @@ const titillium = Titillium_Web({
 
 const Header = () => {
   const { isLoggedIn, user, logOut } = useAuth();
-  console.log(isLoggedIn);
 
   return (
     <div className="mx-auto container flex justify-between py-3 items-center">
