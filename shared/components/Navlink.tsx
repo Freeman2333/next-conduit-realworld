@@ -1,14 +1,14 @@
-import { FC, ReactNode, PropsWithChildren, ComponentProps } from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import clsx from 'clsx';
+import { FC, ReactNode, PropsWithChildren, ComponentProps } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import clsx from "clsx";
 
 interface NavLinkProps extends ComponentProps<typeof Link> {
   href: string;
   children: ReactNode;
   notActive?: boolean;
   activeGreenBorder?: boolean;
-  className?: ComponentProps<'link'>['className'];
+  className?: ComponentProps<"link">["className"];
 }
 
 export const NavLink: FC<PropsWithChildren<NavLinkProps>> = ({
@@ -23,14 +23,14 @@ export const NavLink: FC<PropsWithChildren<NavLinkProps>> = ({
 
   const isActive = !notActive && pathname.startsWith(href);
   const navLinkClasses = clsx(
-    ' hover:no-underline flex gap-1 items-center py-2',
+    " hover:no-underline flex gap-1 items-center py-2",
     {
-      'text-black/80': isActive,
-      'text-black/30': !isActive,
-      'hover:text-black/60': !isActive,
-      'border-conduit-green border-b-2': isActive && activeGreenBorder,
+      "text-black/80": isActive,
+      "text-black/30": !isActive,
+      "hover:text-black/60": !isActive,
+      "border-conduit-green border-b-2": isActive && activeGreenBorder,
     },
-    className,
+    className
   );
 
   return (

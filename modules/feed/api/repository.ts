@@ -1,9 +1,12 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { createApi } from "@reduxjs/toolkit/query/react";
 
-import { realWorldBaseQuery } from '@/baseQuery';
-import { FeedArticle } from '@modules/feed/api/dto/global-feed.in';
-import { transformResponse, replaceCachedArticle } from '@modules/feed/api/utils';
-import { FEED_PAGE_SIZE } from '@modules/feed/consts';
+import { realWorldBaseQuery } from "@/baseQuery";
+import { FeedArticle } from "@modules/feed/api/dto/global-feed.in";
+import {
+  transformResponse,
+  replaceCachedArticle,
+} from "@modules/feed/api/utils";
+import { FEED_PAGE_SIZE } from "@modules/feed/consts";
 
 interface BaseFeedParams {
   page: number;
@@ -16,7 +19,7 @@ export interface GlobalFeedParams extends BaseFeedParams {
 
 export interface favoriteArticleParams {
   slug: string;
-  action: 'favorite' | 'unfavorite';
+  action: "favorite" | "unfavorite";
 }
 
 export interface FeedData {
@@ -25,25 +28,33 @@ export interface FeedData {
 }
 
 export const feedApi = createApi({
-  reducerPath: 'feedApi',
+  reducerPath: "feedApi",
   baseQuery: realWorldBaseQuery,
   endpoints: (builder) => ({
     getGlobalFeed: builder.query<FeedData, GlobalFeedParams>({
-      query: ({ page }) => {
+      query: ({ page, tag }) => {
         return {
-          url: '/articles',
-          method: 'get',
+          url: "/articles",
+          method: "get",
           params: {
             offset: page * FEED_PAGE_SIZE,
             limit: FEED_PAGE_SIZE,
+            tag,
           },
         };
       },
       transformResponse,
     }),
+    getTags: builder.query<{ tags: string[] }, {}>({
+      query: () => {
+        return {
+          url: "/tags",
+        };
+      },
+    }),
     favoriteArticle: builder.query<FeedArticle, favoriteArticleParams>({
       query: ({ slug, action }) => {
-        const method = action === 'favorite' ? 'post' : 'delete';
+        const method = action === "favorite" ? "post" : "delete";
         return {
           url: `/articles/${slug}/favorite`,
           method,
@@ -56,4 +67,8 @@ export const feedApi = createApi({
   }),
 });
 
-export const { useGetGlobalFeedQuery, useLazyFavoriteArticleQuery } = feedApi;
+export const {
+  useGetGlobalFeedQuery,
+  useLazyFavoriteArticleQuery,
+  useGetTagsQuery,
+} = feedApi;

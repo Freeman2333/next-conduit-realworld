@@ -1,6 +1,6 @@
-import { FC } from 'react';
-import { FeedData } from '@modules/feed/api/repository';
-import Article from '@modules/feed/components/Article';
+import { FC } from "react";
+import { FeedData } from "@modules/feed/api/repository";
+import Article from "@modules/feed/components/Article";
 
 interface FeedProps {
   isLoading: boolean;
@@ -9,7 +9,11 @@ interface FeedProps {
   data?: FeedData;
 }
 
-const Feed: FC<FeedProps> = ({ data }) => {
+const Feed: FC<FeedProps> | string = ({ data, isLoading }) => {
+  if (isLoading) {
+    return "loading";
+  }
+
   const { articlesCount, articles } = data;
 
   return (
