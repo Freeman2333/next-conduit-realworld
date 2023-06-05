@@ -40,6 +40,17 @@ module.exports = {
         articleTitle: '2.8rem',
         logo: '3.5rem',
       },
+      borderRadius: {
+        buttonSm: '0.2rem',
+        tag: '10rem',
+      },
+      spacing: {
+        0.2: '0.2rem',
+        0.3: '0.3rem',
+        navItem: '0.425rem',
+        tag: '0.6rem',
+        25: '6.25rem',
+      },
     },
   },
   plugins: [],

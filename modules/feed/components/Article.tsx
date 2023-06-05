@@ -11,7 +11,7 @@ const Article: FC<FeedArticle> = ({ author, createdAt, slug, title, description,
     <div className="py-6 border-t border-black/10">
       <div className="flex justify-between mb-3">
         <ArticleAuthor author={author} createdAt={createdAt} />
-        <FavoriteButton favoritesCount={favoritesCount} favorited={favorited} />
+        <FavoriteButton favoritesCount={favoritesCount} favorited={favorited} slug={slug} />
       </div>
       <Link href={`/${slug}`}>
         <h1 className="mb-1 font-semibold text-2xl text-conduit-gray-1000">{title}</h1>
