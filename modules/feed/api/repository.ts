@@ -32,9 +32,9 @@ export const feedApi = createApi({
   baseQuery: realWorldBaseQuery,
   endpoints: (builder) => ({
     getGlobalFeed: builder.query<FeedData, GlobalFeedParams>({
-      query: ({ page, tag }) => {
+      query: ({ page, tag, isPersonalFeed }) => {
         return {
-          url: "/articles",
+          url: isPersonalFeed ? "/articles/feed" : "/articles",
           method: "get",
           params: {
             offset: page * FEED_PAGE_SIZE,

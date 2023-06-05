@@ -9,12 +9,24 @@ interface FeedProps {
   data?: FeedData;
 }
 
-const Feed: FC<FeedProps> | string = ({ data, isLoading }) => {
+const Feed: FC<FeedProps> | string = ({ data, isLoading, isFetching, error }) => {
   if (isLoading) {
     return "loading";
   }
 
   const { articlesCount, articles } = data;
+
+  if (isLoading || isFetching) {
+    return <p className="mt-4">Feed loading...</p>;
+  }
+
+  if (error) {
+    return <p className="mt-4">Error while loading feed</p>;
+  }
+
+  if (articlesCount === 0) {
+    return <p className="mt-4">No articles are here... yet.</p>;
+  }
 
   return (
     <div>
