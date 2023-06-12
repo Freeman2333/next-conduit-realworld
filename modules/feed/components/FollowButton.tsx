@@ -11,7 +11,7 @@ interface FollowButtonProps {
 
 const FollowButton: FC<FollowButtonProps> = ({ author }) => {
   const [triggerFavoriteArticleQuery] = useLazyFollowAuthorQuery();
-  console.log(author);
+
   return (
     <Button
       btnStyle="LIGHT"

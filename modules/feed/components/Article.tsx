@@ -26,7 +26,7 @@ const Article: FC<FeedArticle> = ({
           slug={slug}
         />
       </div>
-      <Link href={`/${slug}`}>
+      <Link href={`article/${slug}`}>
         <h1 className="mb-1 font-semibold text-2xl text-conduit-gray-1000">
           {title}
         </h1>
