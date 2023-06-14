@@ -6,10 +6,10 @@ interface FeedProps {
   isLoading: boolean;
   isFetching: boolean;
   error: any;
-  data?: FeedData;
+  data: FeedData;
 }
 
-const Feed: FC<FeedProps> | string = ({ data, isLoading, isFetching, error }) => {
+const Feed: FC<FeedProps> = ({ data, isLoading, isFetching, error }) => {
   if (isLoading) {
     return "loading";
   }

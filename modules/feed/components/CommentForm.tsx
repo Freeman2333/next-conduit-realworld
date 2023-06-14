@@ -10,6 +10,10 @@ import { Button } from "@/shared/components/Button";
 import { useCreateCommentMutation } from "@/modules/feed/api/repository";
 import { toast } from "react-toastify";
 
+interface CommentFormProps {
+  slug: string;
+}
+
 interface NewCommentFormValues {
   comment: string;
 }
@@ -18,9 +22,8 @@ const validationSchema = yup.object({
   comment: yup.string().required(),
 });
 
-const CommentForm: FC = () => {
+const CommentForm: FC<CommentFormProps> = ({ slug }) => {
   const auth = useAuth();
-  const { slug } = useParams();
 
   const [triggerCreateComment] = useCreateCommentMutation();
 

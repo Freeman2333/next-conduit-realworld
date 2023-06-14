@@ -14,7 +14,7 @@ const ArticleBanner: FC<ArticleBannerProps> = ({ article }) => {
         <h1 className="text-white text-articleTitle font-semibold leading-articleTitle mb-8">
           {article.title}
         </h1>
-        <ArticleMeta article={article} />
+        <ArticleMeta article={article} authorNameStyle="LIGHT" />
       </div>
     </div>
   );

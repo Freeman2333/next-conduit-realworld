@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, ComponentProps } from "react";
 
 import ArticleAuthor from "@modules/feed/components/ArticleAuthor";
 import { FeedArticle } from "../api/dto/global-feed.in";
@@ -7,15 +7,16 @@ import FavoriteButton from "./FavoriteButton";
 
 interface ArticleBannerProps {
   article: FeedArticle;
+  authorNameStyle?: ComponentProps<typeof ArticleAuthor>["nameStyle"];
 }
 
-const ArticleMeta: FC<ArticleBannerProps> = ({ article }) => {
+const ArticleMeta: FC<ArticleBannerProps> = ({ article, authorNameStyle }) => {
   return (
     <div className="flex gap-3">
       <ArticleAuthor
         author={article.author}
         createdAt={article.createdAt}
-        nameStyle="LIGHT"
+        nameStyle={authorNameStyle}
       />
       <FollowButton author={article.author} />
       <FavoriteButton

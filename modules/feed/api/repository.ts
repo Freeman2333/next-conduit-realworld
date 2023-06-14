@@ -5,8 +5,13 @@ import { FeedArticle } from "@modules/feed/api/dto/global-feed.in";
 import {
   transformResponse,
   replaceCachedArticle,
+  addNewCommentToCache,
+  removeCommentFromCache,
 } from "@modules/feed/api/utils";
 import { FEED_PAGE_SIZE } from "@modules/feed/consts";
+import { NewCommentInDTO } from "@modules/feed/api/dto/new-comment.in";
+import { NewCommentOutDTO } from "@modules/feed/api/dto/new-comment.out";
+import { ArticleCommentsInDTO } from "@modules/feed/api/dto/article-comments.in";
 
 interface BaseFeedParams {
   page: number;
@@ -20,6 +25,20 @@ export interface GlobalFeedParams extends BaseFeedParams {
 export interface favoriteArticleParams {
   slug: string;
   action: "favorite" | "unfavorite";
+}
+
+interface CreateCommentParams {
+  articleSlug: string;
+  comment: string;
+}
+
+interface DeleteCommentParams {
+  articleSlug: string;
+  commentId: number;
+}
+
+interface SingleArticleParams {
+  slug: string;
 }
 
 export interface FeedData {
@@ -52,6 +71,20 @@ export const feedApi = createApi({
         };
       },
     }),
+    getComments: builder.query<ArticleCommentsInDTO, SingleArticleParams>({
+      query: ({ slug }) => {
+        return {
+          url: `/articles/${slug}/comments`,
+        };
+      },
+    }),
+    getArticle: builder.query<{ article: FeedArticle }, { slug: string }>({
+      query: ({ slug }) => {
+        return {
+          url: `/articles/${slug}`,
+        };
+      },
+    }),
     favoriteArticle: builder.query<FeedArticle, favoriteArticleParams>({
       query: ({ slug, action }) => {
         const method = action === "favorite" ? "post" : "delete";
@@ -64,6 +97,42 @@ export const feedApi = createApi({
         await replaceCachedArticle(getState, queryFulfilled, dispatch, feedApi);
       },
     }),
+    // ======================================================
+    // mutations
+    // ======================================================
+    createComment: builder.mutation<NewCommentInDTO, CreateCommentParams>({
+      query: ({ articleSlug, comment }) => {
+        const data: NewCommentOutDTO = {
+          comment: {
+            body: comment,
+          },
+        };
+        return {
+          url: `/articles/${articleSlug}/comments`,
+          method: "post",
+          data,
+        };
+      },
+      onQueryStarted: async ({}, { dispatch, queryFulfilled, getState }) => {
+        await addNewCommentToCache(getState, queryFulfilled, dispatch);
+      },
+    }),
+    deleteComment: builder.mutation<any, DeleteCommentParams>({
+      query: ({ articleSlug, commentId }) => {
+        return {
+          url: `/articles/${articleSlug}/comments/${commentId}`,
+          method: "delete",
+        };
+      },
+      onQueryStarted: async (
+        { commentId },
+        { dispatch, queryFulfilled, getState }
+      ) => {
+        await removeCommentFromCache(getState, queryFulfilled, dispatch, {
+          id: commentId,
+        });
+      },
+    }),
   }),
 });
 
@@ -71,4 +140,8 @@ export const {
   useGetGlobalFeedQuery,
   useLazyFavoriteArticleQuery,
   useGetTagsQuery,
+  useGetArticleQuery,
+  useCreateCommentMutation,
+  useGetCommentsQuery,
+  useDeleteCommentMutation,
 } = feedApi;
