@@ -36,7 +36,7 @@ const SigninForm: FC = () => {
 
   const router = useRouter();
 
-  const onSubmit = async (values: any) => {
+  const onSubmit = async (values: SigninFormValues) => {
     try {
       await signIn(values);
       router.push("/");
