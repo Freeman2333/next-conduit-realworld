@@ -31,7 +31,7 @@ const ArticleAuthor: FC<ArticleAuthorProps> = ({
         <img
           src={author.image}
           alt={author.username}
-          className="rounded-full"
+          className="rounded-full h-8 w-8"
         />
       </Link>
       <div className="flex-col flex">

@@ -7,11 +7,13 @@ import {
   replaceCachedArticle,
   addNewCommentToCache,
   removeCommentFromCache,
+  addNewArticletToCache,
 } from "@modules/feed/api/utils";
 import { FEED_PAGE_SIZE } from "@modules/feed/consts";
 import { NewCommentInDTO } from "@modules/feed/api/dto/new-comment.in";
 import { NewCommentOutDTO } from "@modules/feed/api/dto/new-comment.out";
 import { ArticleCommentsInDTO } from "@modules/feed/api/dto/article-comments.in";
+import { CreateArticleInDTO } from "./dto/new-article.in";
 
 interface BaseFeedParams {
   page: number;
@@ -27,6 +29,13 @@ export interface GlobalFeedParams extends BaseFeedParams {
 export interface favoriteArticleParams {
   slug: string;
   action: "favorite" | "unfavorite";
+}
+
+interface CreateArticleParams {
+  title: string;
+  description: string;
+  body: string;
+  tagList: string;
 }
 
 interface CreateCommentParams {
@@ -121,6 +130,27 @@ export const feedApi = createApi({
         await addNewCommentToCache(getState, queryFulfilled, dispatch);
       },
     }),
+
+    createArticle: builder.mutation<CreateArticleInDTO, CreateArticleParams>({
+      query: ({ title, description, body, tagList }) => {
+        const data: NewCommentOutDTO = {
+          article: {
+            title,
+            description,
+            body,
+            tagList: tagList.split(",").map((tag) => tag.trim()),
+          },
+        };
+        return {
+          url: `/articles`,
+          method: "post",
+          data,
+        };
+      },
+      onQueryStarted: async ({}, { dispatch, queryFulfilled, getState }) => {
+        await addNewArticletToCache(getState, queryFulfilled, dispatch);
+      },
+    }),
     deleteComment: builder.mutation<any, DeleteCommentParams>({
       query: ({ articleSlug, commentId }) => {
         return {
@@ -146,6 +176,7 @@ export const {
   useGetTagsQuery,
   useGetArticleQuery,
   useCreateCommentMutation,
+  useCreateArticleMutation,
   useGetCommentsQuery,
   useDeleteCommentMutation,
 } = feedApi;

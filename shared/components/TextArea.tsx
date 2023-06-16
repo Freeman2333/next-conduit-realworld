@@ -9,6 +9,7 @@ interface TextAreaProps {
   onChange: ComponentProps<"textarea">["onChange"];
   onBlur: ComponentProps<"textarea">["onBlur"];
   noBorder?: boolean;
+  rows?: ComponentProps<"textarea">["rows"];
 }
 
 // eslint-disable-next-line react/display-name

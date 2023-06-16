@@ -39,7 +39,7 @@ const Header = () => {
         {isLoggedIn && (
           <>
             <li>
-              <NavLink href="/editor">
+              <NavLink href="/create-article">
                 <GiNotebook />
                 New Article
               </NavLink>
