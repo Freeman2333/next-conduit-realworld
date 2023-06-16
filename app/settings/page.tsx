@@ -1,9 +1,10 @@
 "use client";
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 import Input from "@/shared/components/Input";
 import { useAuth } from "@/modules/auth/hooks/useAuth";
@@ -45,9 +46,12 @@ const SettingsPage: FC = () => {
       },
     });
 
+  const router = useRouter();
+
   const onSubmit = async (values: SettingsFormValues) => {
     try {
       await trigerUpdateUserMutation(values);
+      router.push(`/${values.username}`);
     } catch (err) {
       toast.error("Something wen't wrong. Please, try again later");
     }

@@ -20,6 +20,8 @@ interface BaseFeedParams {
 export interface GlobalFeedParams extends BaseFeedParams {
   tag: string | null;
   isPersonalFeed: boolean;
+  author?: string;
+  favorited?: string;
 }
 
 export interface favoriteArticleParams {
@@ -51,7 +53,7 @@ export const feedApi = createApi({
   baseQuery: realWorldBaseQuery,
   endpoints: (builder) => ({
     getGlobalFeed: builder.query<FeedData, GlobalFeedParams>({
-      query: ({ page, tag, isPersonalFeed }) => {
+      query: ({ page, tag, isPersonalFeed, author, favorited }) => {
         return {
           url: isPersonalFeed ? "/articles/feed" : "/articles",
           method: "get",
@@ -59,6 +61,8 @@ export const feedApi = createApi({
             offset: page * FEED_PAGE_SIZE,
             limit: FEED_PAGE_SIZE,
             tag,
+            author: favorited ? undefined : author,
+            favorited,
           },
         };
       },

@@ -1,14 +1,14 @@
-import { Titillium_Web } from '@next/font/google';
+import { Titillium_Web } from "@next/font/google";
 
-import { NavLink } from '@components/Navlink';
-import { useAuth } from '@modules/auth/hooks/useAuth';
-import { GiNotebook } from 'react-icons/gi';
-import { BsFillGearFill } from 'react-icons/bs';
-import { BiUserCircle } from 'react-icons/bi';
+import { NavLink } from "@components/Navlink";
+import { useAuth } from "@modules/auth/hooks/useAuth";
+import { GiNotebook } from "react-icons/gi";
+import { BsFillGearFill } from "react-icons/bs";
+import { BiUserCircle } from "react-icons/bi";
 
 const titillium = Titillium_Web({
-  subsets: ['latin'],
-  weight: '700',
+  subsets: ["latin"],
+  weight: "700",
 });
 
 const Header = () => {
@@ -16,7 +16,10 @@ const Header = () => {
 
   return (
     <div className="mx-auto container flex justify-between py-3 items-center">
-      <NavLink href="/" className={`${titillium.className} text-conduit-green text-2xl`}>
+      <NavLink
+        href="/"
+        className={`${titillium.className} text-conduit-green text-2xl`}
+      >
         conduit
       </NavLink>
       <ul className="flex gap-4">
@@ -48,7 +51,7 @@ const Header = () => {
               </NavLink>
             </li>
             <li>
-              <NavLink href={`/@${user?.username}`}>
+              <NavLink href={`/${user?.username}`}>
                 <BiUserCircle />
                 {user?.username}
               </NavLink>

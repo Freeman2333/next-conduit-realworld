@@ -6,15 +6,23 @@ import { replaceCachedProfile } from "./utils";
 import { SignUpInDTO } from "@/modules/auth/api/dto/sign-up.in";
 import { setUser } from "@modules/auth/service/slice";
 
+export interface ProfileParams {
+  username: string;
+}
+
+export interface FollowProfileParams extends ProfileParams {
+  isFollowing: boolean;
+}
+
 export const profileApi = createApi({
   reducerPath: "profileApi",
   baseQuery: realWorldBaseQuery,
   endpoints: (builder) => ({
-    followAuthor: builder.query<{ profile: Author }, { author: Author }>({
-      query: ({ author }) => {
+    followAuthor: builder.query<{ profile: Author }, FollowProfileParams>({
+      query: ({ username, isFollowing }) => {
         return {
-          url: `/profiles/${author.username}/follow`,
-          method: author.following ? "DELETE" : "POST",
+          url: `/profiles/${username}/follow`,
+          method: isFollowing ? "DELETE" : "POST",
         };
       },
       onQueryStarted: async ({}, { dispatch, queryFulfilled, getState }) => {
@@ -24,6 +32,13 @@ export const profileApi = createApi({
           dispatch,
           profileApi
         );
+      },
+    }),
+    getUser: builder.query<{ profile: Author }, ProfileParams>({
+      query: ({ username }) => {
+        return {
+          url: `/profiles/${username}`,
+        };
       },
     }),
     updateUser: builder.mutation<SignUpInDTO, any>({
@@ -43,4 +58,8 @@ export const profileApi = createApi({
   }),
 });
 
-export const { useLazyFollowAuthorQuery, useUpdateUserMutation } = profileApi;
+export const {
+  useLazyFollowAuthorQuery,
+  useUpdateUserMutation,
+  useGetUserQuery,
+} = profileApi;

@@ -48,7 +48,7 @@ export const replaceCachedProfile = async (
     const { data } = await queryFulfilled;
     const feedKeys = Object.keys(state.profileApi.queries);
 
-    updateProfile("getProfile", data, feedKeys, state, dispatch, profileApi);
+    updateProfile("getUser", data, feedKeys, state, dispatch, profileApi);
     replacesCachedProfileInArticle(getState, queryFulfilled, dispatch);
   } catch (e) {}
 };

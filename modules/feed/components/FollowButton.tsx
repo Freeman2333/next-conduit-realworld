@@ -6,20 +6,21 @@ import { Author } from "../api/dto/global-feed.in";
 import { useLazyFollowAuthorQuery } from "@modules/profile/api/repository";
 
 interface FollowButtonProps {
-  author: Author;
+  username: string;
+  isFollowing: boolean;
 }
 
-const FollowButton: FC<FollowButtonProps> = ({ author }) => {
+const FollowButton: FC<FollowButtonProps> = ({ username, isFollowing }) => {
   const [triggerFavoriteArticleQuery] = useLazyFollowAuthorQuery();
 
   return (
     <Button
       btnStyle="LIGHT"
       variant="OUTLINE"
-      onClick={() => triggerFavoriteArticleQuery({ author })}
+      onClick={() => triggerFavoriteArticleQuery({ username, isFollowing })}
     >
-      <AiOutlinePlus className="inline" />{" "}
-      {author.following ? "Unfollow" : "Follow"} {author?.username}
+      <AiOutlinePlus className="inline" /> {isFollowing ? "Unfollow" : "Follow"}{" "}
+      {username}
     </Button>
   );
 };

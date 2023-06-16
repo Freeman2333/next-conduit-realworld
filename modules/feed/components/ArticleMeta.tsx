@@ -18,7 +18,10 @@ const ArticleMeta: FC<ArticleBannerProps> = ({ article, authorNameStyle }) => {
         createdAt={article.createdAt}
         nameStyle={authorNameStyle}
       />
-      <FollowButton author={article.author} />
+      <FollowButton
+        username={article.author.username}
+        isFollowing={article.author.following}
+      />
       <FavoriteButton
         favoritesCount={article.favoritesCount}
         favorited={article.favorited}
