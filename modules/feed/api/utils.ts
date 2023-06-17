@@ -224,3 +224,42 @@ export const removeCommentFromCache = async (
     }
   } catch (e) {}
 };
+
+export const removeArticleFromCache = async (
+  getState: any,
+  queryFulfilled: any,
+  dispatch: any,
+  meta: any
+) => {
+  const state = getState() as RootState;
+
+  try {
+    await queryFulfilled;
+    const feedKeys = Object.keys(state.feedApi.queries);
+    const feedKey = "getGlobalFeed";
+
+    for (
+      let i = 0, key = feedKeys[i], queryItem = state.feedApi.queries[key];
+      i < feedKeys.length;
+      i++, key = feedKeys[i], queryItem = state.feedApi.queries[key]
+    ) {
+      if (!key.startsWith(feedKey)) {
+        continue;
+      }
+
+      dispatch(
+        feedApi.util.updateQueryData(
+          feedKey as any,
+          queryItem!.originalArgs,
+          (draft) => {
+            const original = draft as any;
+
+            original.articles = original.articles.filter(
+              (article) => article.slug !== meta.articleSlug
+            );
+          }
+        )
+      );
+    }
+  } catch (e) {}
+};

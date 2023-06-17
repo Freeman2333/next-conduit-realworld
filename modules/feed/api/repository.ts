@@ -8,6 +8,7 @@ import {
   addNewCommentToCache,
   removeCommentFromCache,
   addNewArticletToCache,
+  removeArticleFromCache
 } from "@modules/feed/api/utils";
 import { FEED_PAGE_SIZE } from "@modules/feed/consts";
 import { NewCommentInDTO } from "@modules/feed/api/dto/new-comment.in";
@@ -46,6 +47,10 @@ interface CreateCommentParams {
 interface DeleteCommentParams {
   articleSlug: string;
   commentId: number;
+}
+
+interface DeleteArticleParams {
+  articleSlug: string;
 }
 
 interface SingleArticleParams {
@@ -110,6 +115,7 @@ export const feedApi = createApi({
         await replaceCachedArticle(getState, queryFulfilled, dispatch, feedApi);
       },
     }),
+
     // ======================================================
     // mutations
     // ======================================================
@@ -167,6 +173,22 @@ export const feedApi = createApi({
         });
       },
     }),
+    deleteArticle: builder.mutation<any, DeleteArticleParams>({
+      query: ({ articleSlug }) => {
+        return {
+          url: `/articles/${articleSlug}`,
+          method: "delete",
+        };
+      },
+      onQueryStarted: async (
+        { articleSlug },
+        { dispatch, queryFulfilled, getState }
+      ) => {
+        await removeArticleFromCache(getState, queryFulfilled, dispatch, {
+          articleSlug,
+        });
+      },
+    }),
   }),
 });
 
@@ -179,4 +201,5 @@ export const {
   useCreateArticleMutation,
   useGetCommentsQuery,
   useDeleteCommentMutation,
+  useDeleteArticleMutation,
 } = feedApi;
