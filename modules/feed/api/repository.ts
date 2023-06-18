@@ -15,6 +15,7 @@ import { NewCommentInDTO } from "@modules/feed/api/dto/new-comment.in";
 import { NewCommentOutDTO } from "@modules/feed/api/dto/new-comment.out";
 import { ArticleCommentsInDTO } from "@modules/feed/api/dto/article-comments.in";
 import { CreateArticleInDTO } from "./dto/new-article.in";
+import { CreateArticleOutDTO } from "./dto/new-article.out";
 
 interface BaseFeedParams {
   page: number;
@@ -37,6 +38,13 @@ interface CreateArticleParams {
   description: string;
   body: string;
   tagList: string;
+}
+
+interface CreateArticleParams {
+  title: string;
+  description: string;
+  body: string;
+  slug: string;
 }
 
 interface CreateCommentParams {
@@ -137,9 +145,28 @@ export const feedApi = createApi({
       },
     }),
 
+    EditArticle: builder.mutation<CreateArticleInDTO, CreateArticleParams>({
+      query: ({ title, description, body, slug }) => {
+        const data: any = {
+          article: {
+            title,
+            description,
+            body,
+          },
+        };
+        return {
+          url: `/articles/${slug}`,
+          method: "put",
+          data,
+        };
+      },
+      onQueryStarted: async ({}, { dispatch, queryFulfilled, getState }) => {
+        await addNewArticletToCache(getState, queryFulfilled, dispatch);
+      },
+    }),
     createArticle: builder.mutation<CreateArticleInDTO, CreateArticleParams>({
       query: ({ title, description, body, tagList }) => {
-        const data: NewCommentOutDTO = {
+        const data: CreateArticleOutDTO = {
           article: {
             title,
             description,
@@ -199,6 +226,7 @@ export const {
   useGetArticleQuery,
   useCreateCommentMutation,
   useCreateArticleMutation,
+  useEditArticleMutation,
   useGetCommentsQuery,
   useDeleteCommentMutation,
   useDeleteArticleMutation,

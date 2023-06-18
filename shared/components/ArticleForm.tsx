@@ -1,5 +1,5 @@
 "use client";
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -8,6 +8,7 @@ import Input from "@/shared/components/Input";
 import { Button } from "@components/Button";
 import TextArea from "./TextArea";
 import ErrorsList from "@components/ErrorsList";
+import { FeedArticle } from "@modules/feed/api/dto/global-feed.in";
 
 export interface ArticleFormValues {
   title: string;
@@ -18,6 +19,7 @@ export interface ArticleFormValues {
 
 interface ArticleFormProps {
   onSubmit: (values: ArticleFormValues) => Promise<void>;
+  article?: FeedArticle
 }
 
 const validationSchema = yup.object({
@@ -27,7 +29,7 @@ const validationSchema = yup.object({
   tagList: yup.string(),
 });
 
-const ArticleForm: FC<ArticleFormProps> = ({ onSubmit }) => {
+const ArticleForm: FC<ArticleFormProps> = ({ onSubmit, article }) => {
   const { register, handleSubmit, formState, reset } =
     useForm<ArticleFormValues>({
       resolver: yupResolver(validationSchema),
@@ -35,9 +37,21 @@ const ArticleForm: FC<ArticleFormProps> = ({ onSubmit }) => {
         title: "",
         description: "",
         body: "",
-        tagList: '',
+        tagList: "",
       },
     });
+
+  useEffect(() => {
+    if (!article) {
+      return;
+    }
+    reset({
+      title: article.title,
+      description: article.description,
+      body: article.body,
+      tagList: article.tagList.join(","),
+    });
+  }, [article, reset]);
 
   return (
     <form
