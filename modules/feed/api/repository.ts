@@ -40,7 +40,7 @@ interface CreateArticleParams {
   tagList: string;
 }
 
-interface CreateArticleParams {
+interface EditArticleParams {
   title: string;
   description: string;
   body: string;
@@ -145,7 +145,7 @@ export const feedApi = createApi({
       },
     }),
 
-    EditArticle: builder.mutation<CreateArticleInDTO, CreateArticleParams>({
+    EditArticle: builder.mutation<CreateArticleInDTO, EditArticleParams>({
       query: ({ title, description, body, slug }) => {
         const data: any = {
           article: {
