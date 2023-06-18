@@ -21,11 +21,11 @@ const ArticlePage: FC = () => {
   });
 
   if (isLoading || isFetching) {
-    return "loading";
+    return <div className="container mx-auto">loading...</div>;
   }
 
   if (!data?.article) {
-    return "article not found";
+    return <div className="container mx-auto">article not found</div>
   }
 
   return (
