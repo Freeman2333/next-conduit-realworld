@@ -216,7 +216,7 @@ export const removeCommentFromCache = async (
             const original = draft as any;
 
             original.comments = original.comments.filter(
-              (comment) => comment.id !== meta.id
+              (comment: any) => comment.id !== meta.id
             );
           }
         )
@@ -255,7 +255,7 @@ export const removeArticleFromCache = async (
             const original = draft as any;
 
             original.articles = original.articles.filter(
-              (article) => article.slug !== meta.articleSlug
+              (article: any) => article.slug !== meta.articleSlug
             );
           }
         )
