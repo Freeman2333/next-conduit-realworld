@@ -13,8 +13,8 @@ const CreateArticlePage = () => {
 
   const onSubmit = async (values: ArticleFormValues) => {
     try {
-      const response = await trigerCreateArticleMutation(values);
-      router.push(`/article/${response.data.article.slug}`);
+      const data = await trigerCreateArticleMutation(values).unwrap();
+      router.push(`/article/${data.article.slug}`);
     } catch (error) {
       toast.error("Something wen't wrong. Please, try again later");
     }
