@@ -21,8 +21,8 @@ const EditArticlePage = () => {
 
   const onSubmit = async (values: ArticleFormValues) => {
     try {
-      const response = await trigerEditArticleMutation({...values, slug});
-      router.push(`/article/${response.data.article.slug}`);
+      const data = await trigerEditArticleMutation({...values, slug}).unwrap();
+      router.push(`/article/${data.article.slug}`);
     } catch (error) {
       toast.error("Something wen't wrong. Please, try again later");
     }
